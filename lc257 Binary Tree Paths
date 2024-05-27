@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;          // The value of the node
+ *     TreeNode left;    // Pointer to the left child node
+ *     TreeNode right;   // Pointer to the right child node
+ *     TreeNode(int x) { val = x; }  // Constructor to initialize the node with a value
+ * }
+ */
+class Solution {
+
+    // List to store the paths from root to leaf nodes
+    List<String> ans = new LinkedList<>();
+
+    // Helper function to perform depth-first search (DFS) on the tree
+    private void dfs(TreeNode root, StringBuilder sb) {
+        // Base case: if the current node is null, return
+        if (root == null) return;
+        
+        // Save the current length of the StringBuilder
+        int len = sb.length();
+        
+        // If the current node is a leaf node (no children)
+        if (root.left == null && root.right == null) {
+            // Append the current node's value to the path
+            sb.append(root.val);
+            // Add the complete path to the answer list
+            ans.add(new String(sb));
+            // Restore the StringBuilder to its original state
+            sb.delete(len, sb.length());
+            return;
+        }
+
+        // Append the current node's value and the "->" delimiter to the path
+        sb.append(root.val).append("->");
+        // Recursively perform DFS on the left subtree
+        dfs(root.left, sb);
+        // Recursively perform DFS on the right subtree
+        dfs(root.right, sb);
+        // Restore the StringBuilder to its original state
+        sb.delete(len, sb.length());
+    }
+
+    // Main function to find all paths from root to leaf nodes
+    public List<String> binaryTreePaths(TreeNode root) {
+        // Start DFS from the root with an empty path
+        dfs(root, new StringBuilder());
+        // Return the list of all paths
+        return ans;
+    }
+}
