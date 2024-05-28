@@ -13,32 +13,32 @@ class Solution {
     List<String> ans = new LinkedList<>();
 
     // Helper function to perform depth-first search (DFS) on the tree
-    private void dfs(TreeNode root, StringBuilder sb) {
+    private void dfs(TreeNode root, StringBuilder path) {
         // Base case: if the current node is null, return
         if (root == null) return;
         
         // Save the current length of the StringBuilder
-        int len = sb.length();
+        int len = path.length();
         
         // If the current node is a leaf node (no children)
         if (root.left == null && root.right == null) {
             // Append the current node's value to the path
-            sb.append(root.val);
+            path.append(root.val);
             // Add the complete path to the answer list
-            ans.add(new String(sb));
+            ans.add(new String(path));
             // Restore the StringBuilder to its original state
-            sb.delete(len, sb.length());
+            sb.delete(len, path.length());
             return;
         }
 
         // Append the current node's value and the "->" delimiter to the path
-        sb.append(root.val).append("->");
+        path.append(root.val).append("->");
         // Recursively perform DFS on the left subtree
-        dfs(root.left, sb);
+        dfs(root.left, path);
         // Recursively perform DFS on the right subtree
-        dfs(root.right, sb);
+        dfs(root.right, path);
         // Restore the StringBuilder to its original state
-        sb.delete(len, sb.length());
+        path.delete(len, path.length());
     }
 
     // Main function to find all paths from root to leaf nodes
