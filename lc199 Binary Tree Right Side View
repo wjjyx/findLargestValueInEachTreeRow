@@ -19,21 +19,21 @@ class Solution {
             // Iterate through the current level
             for (int i = 0; i < size; i++) {
                 // Remove the current node from the queue
-                TreeNode curr = queue.remove();
+                TreeNode cur = queue.remove();
                 
                 // If this is the last node in the current level, add its value to the result list
                 if (i == size - 1) {
-                    result.add(curr.val);
+                    result.add(cur.val);
                 }
                 
                 // Add the left child to the queue if it exists
-                if (curr.left != null) {
-                    queue.offer(curr.left);
+                if (cur.left != null) {
+                    queue.offer(cur.left);
                 }
                 
                 // Add the right child to the queue if it exists
-                if (curr.right != null) {
-                    queue.offer(curr.right);
+                if (cur.right != null) {
+                    queue.offer(cur.right);
                 }
             }
         }
