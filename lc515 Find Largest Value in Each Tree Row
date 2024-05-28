@@ -15,28 +15,43 @@ class TreeNode {
 
 public class Solution {
 
+    // Depth-First Search (DFS) helper function
     public void dfs(TreeNode node, int depth, List<Integer> ans) {
+        // Base case: if the node is null, return
         if (node == null) {
             return;
         }
 
+        // If the current depth equals the size of the answer list,
+        // it means we haven't recorded a value for this depth yet,
+        // so we add the current node's value
         if (ans.size() == depth) {
             ans.add(node.val);
         }
 
+        // If the current node's value is greater than the recorded value for this depth,
+        // update the value for this depth with the current node's value
         if (node.val > ans.get(depth)) {
             ans.set(depth, node.val);
         }
 
+        // Recursively call dfs on the left child, increasing the depth by 1
         dfs(node.left, depth + 1, ans);
+        // Recursively call dfs on the right child, increasing the depth by 1
         dfs(node.right, depth + 1, ans);
     }
 
+    // Main function to find the largest values in each tree row
     public List<Integer> largestValues(TreeNode root) {
+        // Initialize the answer list to store the largest values at each depth
         List<Integer> ans = new ArrayList<>();
+        // Start DFS from the root at depth 0
         dfs(root, 0, ans);
+        // Return the list of largest values
         return ans;
     }
+
+
 
     public static void main(String[] args) {
         // Example usage
