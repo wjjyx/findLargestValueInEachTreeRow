@@ -27,7 +27,7 @@ class Solution {
             // Add the complete path to the answer list
             ans.add(new String(path));
             // Restore the StringBuilder to its original state
-            sb.delete(len, path.length());
+            path.delete(len, path.length());
             return;
         }
 
