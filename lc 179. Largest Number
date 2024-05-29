@@ -1,1 +1,29 @@
+class Solution {
+    // Method to find the largest number that can be formed from an array of integers
+    public String largestNumber(int[] nums) {
+        int n = nums.length; // Get the length of the input array
+        String[] a = new String[n]; // Create a new array of strings with the same length as nums
 
+        // Convert each integer in nums to a string and store it in the array a
+        for (int i = 0; i < n; i++) {
+            a[i] = String.valueOf(nums[i]);
+        }
+
+        // Sort the array of strings based on a custom comparator
+        Arrays.sort(a, (i, j) -> {
+            return (j + i).compareTo(i + j); // Compare the concatenated strings in reverse order
+        });
+
+        // If the largest number is "0", return "0" to avoid leading zeros
+        if (a[0].equals("0")) return "0";
+
+        // Create a StringBuffer to build the result string
+        StringBuffer sb = new StringBuffer();
+
+        // Append each string from the sorted array to the StringBuffer
+        for (String s : a) sb.append(s);
+
+        // Convert the StringBuffer to a string and return it
+        return sb.toString();
+    }
+}
