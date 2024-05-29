@@ -1,1 +1,40 @@
+import java.util.*;
 
+class Solution {
+    // Method to find the intersection of two arrays
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // Create a set to store unique elements from the first array
+        Set<Integer> set = new HashSet<>();
+        
+        // Add each element from nums1 to the set
+        for (int i : nums1) {
+            set.add(i);
+        }
+        
+        // Create a list to store the intersection elements
+        List<Integer> list = new ArrayList<>();
+        
+        // Iterate through the second array
+        for (int i : nums2) {
+            // If the set contains the current element from nums2
+            if (set.contains(i)) {
+                // Add the element to the list
+                list.add(i);
+                // Remove the element from the set to avoid duplicates
+                set.remove(i);
+            }
+        }
+        
+        // Create an array to store the result
+        int[] res = new int[list.size()];
+        int j = 0; // Index for the result array
+        
+        // Add elements from the list to the result array
+        for (int i : list) {
+            res[j++] = i;
+        }
+        
+        // Return the result array containing the intersection
+        return res;
+    }
+}
