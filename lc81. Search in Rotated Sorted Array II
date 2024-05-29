@@ -1,1 +1,64 @@
+class Solution {
+    public boolean search(int[] nums, int target) {
+        // Get the length of the array
+        int n = nums.length;
+        // If the array is empty, return false as the target cannot be found
+        if (n == 0) return false;
 
+        // 1. Remove trailing elements that are equal to the first element
+        int R = n - 1;
+        while (R > 0 && nums[R] == nums[0]) {
+            R--;
+        }
+
+        // 2. Find the pivot point where the array is rotated
+        int l = 0, r = R;
+        while (l < r) {
+            // Calculate the middle index, biasing towards the right
+            int mid = l + r + 1 >> 1;
+            // If the middle element is greater than or equal to the first element,
+            // it means mid is in the left sorted portion of the array
+            if (nums[mid] >= nums[0]) l = mid;
+            // Otherwise, mid is in the right sorted portion of the array
+            else r = mid - 1;
+        }
+
+        // 3. Determine the sorted portion to search for the target
+        if (target >= nums[0]) {
+            // If the target is in the left sorted portion
+            l = 0;
+        } else {
+            // If the target is in the right sorted portion
+            l = r + 1;
+            r = R;
+        }
+
+        // 4. Perform binary search in the determined portion to find the target
+        while (l < r) {
+            // Calculate the middle index
+            int mid = l + r >> 1;
+            // If the middle element is greater than or equal to the target,
+            // the target must be in the left half
+            if (nums[mid] >= target) r = mid;
+            // Otherwise, the target must be in the right half
+            else l = mid + 1;
+        }
+
+        // Check if the found element is the target and return the result
+        return nums[r] == target;
+    }
+}
+
+
+
+//Due to the worst-case time complexity of binary search being O(n), it is feasible to perform a linear scan of the entire array to see if the target can be found.
+
+class Solution {
+    public boolean search(int[] nums, int target) {
+        for(int i = 0;i < nums.length;i ++)
+            if(nums[i] == target)
+                return true;
+
+        return false;
+    }
+}
