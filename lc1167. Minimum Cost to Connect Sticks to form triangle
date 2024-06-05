@@ -1,0 +1,25 @@
+import java.util.Arrays;
+
+public class TriangleForm {
+    public static int findMinimumSticksForTriangle(int[] sticks) {
+        if (sticks.length < 3) {
+            return 0;  // Not enough sticks to form any triangle
+        }
+
+        Arrays.sort(sticks);
+        
+        for (int i = 0; i < sticks.length - 2; i++) {
+            if (sticks[i] + sticks[i+1] > sticks[i+2]) {
+                return 3;  // A valid triangle can be formed, return the count of sticks used
+            }
+        }
+        
+        return 0;  // No valid triangle found
+    }
+
+    public static void main(String[] args) {
+        int[] sticks = {10, 21, 7, 6, 3};
+        System.out.println("Minimum number of sticks required to form a triangle: " 
+                            + findMinimumSticksForTriangle(sticks));
+    }
+}
