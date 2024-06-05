@@ -1,33 +1,104 @@
 public class Problem_0416_PartitionEqualSubsetSum {
 
-	public static boolean canPartition(int[] nums) {
-		int N = nums.length;
-		int sum = 0;
-		for (int i = 0; i < N; i++) {
-			sum += nums[i];
-		}
-		if ((sum & 1) != 0) {
-			return false;
-		}
-		sum >>= 1;
-		boolean[][] dp = new boolean[N][sum + 1];
-		for (int i = 0; i < N; i++) {
-			dp[i][0] = true;
-		}
-		if (nums[0] <= sum) {
-			dp[0][nums[0]] = true;
-		}
-		for (int i = 1; i < N; i++) {
-			for (int j = 1; j <= sum; j++) {
-				dp[i][j] = dp[i - 1][j];
-				if (j - nums[i] >= 0) {
-					dp[i][j] |= dp[i - 1][j - nums[i]];
-				}
-			}
-			if (dp[i][sum]) {
-				return true;
-			}
-		}
+    public static boolean canPartition(int[] nums) {
+        int N = nums.length; // Store the length of the input array.
+        int sum = 0; // Initialize sum to 0, which will be used to calculate the total sum of all elements in the array.
+
+        // Loop through each element in the array to calculate the total sum.
+        for (int i = 0; i < N; i++) {
+            sum += nums[i]; // Increment sum by each element in the array.
+        }
+
+        // Check if the sum is odd using a bitwise AND operation. If it is odd, it cannot be split evenly into two equal parts.
+        if ((sum & 1) != 0) {
+            return false; // Return false immediately if the sum is odd.
+        }
+
+        // Shift sum to the right by 1 bit to divide it by 2. This determines the target sum for each subset.
+        sum >>= 1;
+
+        // Initialize a dynamic programming table where dp[i][j] will indicate whether a subset with sum j can be formed using the first i items.
+        boolean[][] dp = new boolean[N][sum + 1];
+
+        // Initialize the first column, where the sum is 0. A subset with sum 0 can always be formed by choosing no elements.
+        for (int i = 0; i < N; i++) {
+            dp[i][0] = true;
+        }
+
+        // Special case initialization: Check if the first item can be the entirety of one subset by itself.
+        if (nums[0] <= sum) {
+            dp[0][nums[0]] = true; // Set dp[0][nums[0]] to true if nums[0] is less than or equal to the target sum.
+        }
+
+        // Iterate over each element starting from the second item.
+        for (int i = 1; i < N; i++) {
+            for (int j = 1; j <= sum; j++) { // Iterate through each possible sum from 1 up to the target sum.
+                dp[i][j] = dp[i - 1][j]; // Inherit the possibility of achieving this sum without the current item.
+                
+                // Check if the current item can be used to form the sum 'j' by checking if 'j-nums[i]' was achievable with the previous items.
+                if (j - nums[i] >= 0) {
+                    dp[i][j] |= dp[i - 1][j - nums[i]]; // Use bitwise OR to update dp[i][j], indicating the sum 'j' is achievable.
+                }
+            }
+            // Early termination: If the target sum can be achieved with the first i items, return true.
+            if (dp[i][sum]) {
+                return true;
+            }
+        }
+
+        // After evaluating all items, if no valid partition is found, return false.
+        return false;
+    }
+}
+
+
+
+
+
+
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int n = nums.length; // Store the length of the input array nums.
+        int sum = 0; // Initialize sum to hold the total sum of the array elements.
+        
+        // Iterate over all elements in the nums array to compute the total sum.
+        for (int i = 0; i < n; ++i) {
+            sum += nums[i]; // Add each element to the sum.
+        }
+        
+        // Check if the total sum is odd. If so, it's not possible to split into two equal parts.
+        if (sum % 2 != 0) return false;
+        
+        int t = sum / 2; // Calculate the target value each subset must sum to, which is half of the total sum.
+        
+        // Create a boolean DP table where f[i][j] will be true if a subset of the first i items has a sum of j.
+        boolean[][] f = new boolean[n + 1][t + 1];
+        
+        // Initialize the DP table where f[0][0] is true because a subset of 0 elements has a sum of 0.
+        f[0][0] = true;
+        
+        // Iterate through each element in nums to fill out the DP table.
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 0; j <= t; ++j) {
+                // Carry forward the value from the previous item (i.e., without including the current item).
+                f[i][j] = f[i - 1][j];
+                
+                // Check if it's possible to include the current item (nums[i-1]) in the subset
+                // to make the sum j.
+                if (j >= nums[i - 1]) {
+                    // Update f[i][j] to true if it was already true or if it can be true
+                    // by including the current item (thus looking back at the sum of j - nums[i-1]).
+                    f[i][j] = f[i][j] || f[i - 1][j - nums[i - 1]];
+                }
+            }
+        }
+        
+        // The answer is found at f[n][t], which tells us if it's possible to have a subset
+        // of all n items with sum t.
+        return f[n][t];
+    }
+}
+
 		return false;
 	}
 
