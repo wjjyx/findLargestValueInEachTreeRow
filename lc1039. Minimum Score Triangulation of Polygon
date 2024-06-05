@@ -1,0 +1,19 @@
+public int minScoreTriangulation(int[] w) {
+    int n = w.length;  // Get the length of the array, which represents the number of vertices in the polygon.
+    int[][] dp = new int[n][n];  // Create a DP table where dp[i][j] represents the minimum score of triangulating the sub-polygon from vertex i to vertex j.
+
+    for (int len = 3; len <= n; len++) {  // Start checking polygons of size 3 (triangles) up to the size of the whole polygon (n).
+        for (int i = 0; i + len - 1 < n; i++) {  // Iterate over all possible starting points i for sub-polygons of size len.
+            int j = i + len - 1;  // Calculate the endpoint j of the sub-polygon starting at i and of length len.
+            if (len == 3) // Base case: When the length is 3, the polygon is a triangle.
+                dp[i][j] = w[i] * w[j] * w[i + 1];  // Directly calculate the score of the triangle as the product of its sides.
+            else {  // If the sub-polygon has more than three sides, we need to find the optimal triangulation.
+                dp[i][j] = (int) 1e9;  // Initialize the minimum score for dp[i][j] with a large number (effectively infinity).
+                for (int k = i + 1; k <= j - 1; k++) {  // Iterate through all possible vertices k that can be used to triangulate i and j.
+                    dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j] + w[i] * w[k] * w[j]);  // Update dp[i][j] by considering the vertex k to form one triangle (i, k, j) and recursively solve for the smaller sub-polygons (i to k and k to j).
+                }
+            }
+        }
+    }
+    return dp[0][n - 1];  // Return the minimum triangulation score for the entire polygon from vertex 0 to vertex n-1.
+}
